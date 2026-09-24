@@ -30,7 +30,7 @@ def test_theme_preserves_control_hooks_and_collapses_secondary_details():
     assert '自动发送仍需独立发布授权。' in visible
     assert '<summary>检索、审核与导入规则</summary>' in disclosure
     assert all("open" not in item for item in parsed.details)
-    assert "https://codex-resets.com/" in html
+    assert "https://codex-resets.com/" not in html
     assert "<script src=\"https://" not in html
 
 

@@ -24,7 +24,8 @@ also be deployment-controlled. The catalog contains no credentials:
   its exact installed version and ACP model/permission selection before enabling
   that profile. Do not point this adapter at a 2.x executable: its provider and
   permission configuration have a different shape, and the isolated 2.0.12
-  attempt failed before any repository command. See `docs/coding-executors.md`.
+  attempt failed before any repository command. Revalidate any newer adapter
+  against its installed version before selecting it in the catalog.
 
 Install each `.service.conf` as `50-execution-catalog.conf` under its matching
 `/etc/systemd/system/<unit>.d/` directory. These drop-ins cover broker, dispatcher,

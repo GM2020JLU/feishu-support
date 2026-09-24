@@ -4,7 +4,17 @@ This starts a new, private, loopback-only instance. It needs Python 3.12+, a
 browser, and internet access to install Python dependencies. It needs no Feishu
 login, Telegram, remote build host, model, or development board. Run these
 commands from a fresh checkout on a Linux machine; do not point them at an
-existing instance or database.
+existing instance or database. If you have not cloned the repository yet:
+
+```sh
+git clone https://github.com/GM2020JLU/feishu-support.git
+cd feishu-support
+```
+
+Check that `python3.12 --version` works and that your Python installation
+includes `venv`. The example below uses Python 3.12; a newer Python is also
+supported. Install only the default package; optional model and document
+parser dependencies are unnecessary.
 
 ```sh
 python3.12 -m venv .venv

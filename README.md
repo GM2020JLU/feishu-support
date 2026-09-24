@@ -3,9 +3,8 @@
 This Python project provides a local control plane and web console for engineering
 support work. It can track a Bug through intake, investigation, code execution,
 verification review, controlled Project writeback, and closure. The software Bug
-path has been exercised in an **isolated acceptance instance**; that result is
-not a production deployment, device validation, or proof that every coding
-tool and chat entry point works at the same depth.
+path has been exercised in an **isolated acceptance instance**. Live Feishu Project
+access depends on the operator's own identity, space permissions and configuration.
 
 The example configuration contains no Feishu credentials. A new checkout starts
 in a local, web-only `shadow` mode. It cannot read or change anyone's Feishu Project
@@ -14,7 +13,7 @@ type, and the required control-layer permissions.
 
 ## Try it locally
 
-Python 3.12 or newer is required. Follow the [software-only quickstart](docs/quickstart.md)
+On Linux, Python 3.12 or newer is required. Follow the [software-only quickstart](docs/quickstart.md)
 to install in a virtual environment, create a private database and login key,
 open the console at `http://127.0.0.1:8765/`, and view a clearly synthetic
 local Case. The first start needs no device, remote build host, Hermes, model,
@@ -35,12 +34,16 @@ are separate facts. A build or model report alone does not prove a fix.
 
 ## Configure a real installation
 
-Start from `config/local-software-project.example.yaml`. Keep the initial web
+Start from `config/local-software-project.example.yaml` and the
+[configuration guide](docs/configuration.md). Keep the initial web
 profile isolated while configuring repositories, an authorized official Feishu
 Project client, and the exact spaces and Bug types you may access. Project
 writes stay disabled by default. See [Project setup](docs/feishu-project-setup.md)
 for the prerequisite discovery and authorization boundary. Do not copy another operator's
 IDs, database, login key, OAuth state, or runtime directories.
+
+See [feature limits](docs/limitations.md), [troubleshooting](docs/troubleshooting.md)
+and the [change log](CHANGELOG.md) before using an optional integration.
 
 The wheel is the supported deployment artifact. Do not copy a development
 virtual environment into a service. No service is installed or started by the
