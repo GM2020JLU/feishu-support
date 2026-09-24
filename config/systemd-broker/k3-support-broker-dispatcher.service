@@ -1,0 +1,31 @@
+[Unit]
+Description=K3 support opt-in worker dispatcher and execution observer
+After=dbus.service k3-support-broker.service k3-support-broker-launcher.socket
+Requires=k3-support-broker.service k3-support-broker-launcher.socket
+Conflicts=k3-support-broker-observer.service
+
+[Service]
+Type=simple
+User=k3-support-control
+Group=k3-support-control
+ExecStart=/opt/k3-support/venv/bin/k3-support-broker-observer --config /etc/k3-support/broker.yaml --watch --dispatch-workers --contract-directory /etc/k3-support/worker-contract --worker-user k3-support-worker --launcher-socket /run/k3-support-launcher.sock
+StateDirectory=k3-support-control
+StateDirectoryMode=0700
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectControlGroups=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+RestrictAddressFamilies=AF_UNIX
+CapabilityBoundingSet=
+KillMode=control-group
+TimeoutStopSec=15
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

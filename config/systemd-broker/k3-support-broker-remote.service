@@ -1,0 +1,32 @@
+[Unit]
+Description=K3 support control-side remote execution consumer
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=k3-support-control
+Group=k3-support-control
+ExecStart=/opt/k3-support/venv/bin/k3-support-broker-remote --config /etc/k3-support/broker.yaml --contract-directory /etc/k3-support/contracts --worker-user k3-support-worker --watch
+StateDirectory=k3-support-control
+StateDirectoryMode=0700
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectControlGroups=yes
+# Partial proc masking prevents an unprivileged nested proc mount.
+# The inner sandbox provides its own proc/PID namespace and read-only sys.
+ProtectKernelTunables=no
+ProtectKernelModules=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
+CapabilityBoundingSet=
+KillMode=control-group
+TimeoutStopSec=15
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

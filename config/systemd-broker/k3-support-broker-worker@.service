@@ -1,0 +1,37 @@
+[Unit]
+Description=K3 support isolated coding claim %i
+Requires=k3-support-broker.service
+After=k3-support-broker.service
+
+[Service]
+Type=exec
+# Retain the invocation and exit status until control-side observation.
+RemainAfterExit=yes
+# Late observation can identify a removed cgroup without guessing a slice.
+Slice=system.slice
+User=k3-support-worker
+Group=k3-support-worker
+SupplementaryGroups=k3-support-ipc
+StateDirectory=k3-support-worker k3-support-worker/codex k3-support-worker/tasks
+StateDirectoryMode=0700
+WorkingDirectory=/var/lib/k3-support-worker
+# Root-owned drop-ins select a deployment executable and native credential home.
+Environment=K3_SUPPORT_AGENT_EXECUTABLE=/opt/codex/bin/codex
+Environment=K3_SUPPORT_AGENT_HOME=/var/lib/k3-support-worker/codex
+ExecStart=/opt/k3-support/venv/bin/k3-support-broker-worker --socket /run/k3-support-broker/broker.sock --control-user k3-support-control --claim-request-id %i --agent-executable ${K3_SUPPORT_AGENT_EXECUTABLE} --home /var/lib/k3-support-worker --agent-home ${K3_SUPPORT_AGENT_HOME} --workspace-root /var/lib/k3-support-worker/tasks --contract-directory /etc/k3-support/worker-contract
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectControlGroups=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+CapabilityBoundingSet=
+LimitCORE=0
+KillMode=control-group
+TimeoutStopSec=30
+RuntimeMaxSec=7350
+Restart=no

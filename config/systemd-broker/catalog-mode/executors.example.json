@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "profiles": {
+    "codex": {
+      "contract": "codex.json",
+      "executable": "/opt/codex/bin/codex",
+      "agent_home": "/var/lib/k3-support-worker/codex"
+    },
+    "claude": {
+      "contract": "claude.json",
+      "executable": "/opt/claude/bin/claude",
+      "agent_home": "/var/lib/k3-support-worker/claude"
+    },
+    "dsh": {
+      "contract": "dsh.json",
+      "executable": "/opt/dsh/bin/dsh",
+      "agent_home": "/var/lib/k3-support-worker/dsh"
+    },
+    "opencode": {
+      "contract": "opencode.json",
+      "executable": "/opt/k3-support/bin/opencode-1.18.29",
+      "agent_home": "/var/lib/k3-support-worker/opencode"
+    },
+    "hermes": {
+      "contract": "hermes.json",
+      "executable": "/opt/hermes/venv/bin/python",
+      "agent_home": "/var/lib/k3-support-worker/hermes"
+    }
+  }
+}

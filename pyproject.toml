@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "k3-support"
+version = "0.1.0"
+description = "Deterministic control plane for a K3 AI support workflow"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+requires-python = ">=3.12"
+dependencies = ["jsonschema>=4.23", "PyYAML>=6.0.2", "cryptography==50.0.1"]
+
+[project.optional-dependencies]
+test = ["pytest>=8.3"]
+hybrid = ["qdrant-client==1.19.0"]
+
+[project.scripts]
+k3-supportctl = "k3_support.cli:main"
+k3-support-project-read = "k3_support.project_read_cli:main"
+k3-support-project-refresh = "k3_support.project_refresh_service:main"
+k3-support-ingress = "k3_support.services:ingress_main"
+k3-support-worker = "k3_support.services:worker_main"
+k3-support-job-worker = "k3_support.services:job_worker_main"
+k3-support-job-supervisor = "k3_support.worker_supervisor:main"
+k3-support-gui = "k3_support.gui:main"
+k3-support-replay = "k3_support.replay_cli:main"
+k3-support-capture-debug = "k3_support.debug_transcript_capture:main"
+k3-support-attachment = "k3_support.docling_cli:main"
+k3-support-broker = "k3_support.broker_service:main"
+k3-support-broker-worker = "k3_support.broker_worker_cli:main"
+k3-support-broker-observer = "k3_support.broker_observer_service:main"
+k3-support-broker-launcher = "k3_support.broker_launcher:main"
+k3-support-broker-remote = "k3_support.broker_remote_service:main"
+k3-support-broker-board = "k3_support.broker_board_service:main"
+k3-support-hermes-stdin = "k3_support.hermes_stdin:main"
+k3-support-outbox = "k3_support.services:outbox_main"
+k3-support-reconcile = "k3_support.services:reconcile_main"
+k3-support-body-retention = "k3_support.retention_worker:main"
+k3-support-draft-retention = "k3_support.draft_retention_worker:main"
+k3-support-health-watchdog = "k3_support.watchdog:main"
+k3-codex-remote = "k3_support.codex_remote:main"
+k3-codex-buildhost = "k3_support.codex_remote:main"
+k3-codex-board = "k3_support.codex_board:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/k3_support"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

@@ -1,0 +1,60 @@
+schema_version: 2
+mode: shadow
+timezone: Asia/Shanghai
+work_hours:
+  start: "09:00"
+  end: "18:00"
+paths:
+  data_dir: ~/.local/share/software-support
+  database: ~/.local/share/software-support/state/support.db
+runtime:
+  remote_transport: local
+  remote_host: localhost
+  lark_cli_command: lark-cli
+  hermes_command: hermes
+features:
+  shadow_reply: false
+  auto_faq: false
+  codex: false
+  board: false
+  wip_push: false
+  mail: false
+  calendar: false
+  base_sync: false
+# Ordinary operator notices and scheduled mail summaries.
+# telegram: legacy destination; feishu: requires all Feishu control identities;
+# web: console only, no external notification. P0 routes below are independent.
+operator_notifications:
+  channel: web
+notifications:
+  telegram_p0: false
+  feishu_p0_message: false
+  feishu_app_urgent: false
+  feishu_sms_urgent: false
+policy:
+  auto_reply_confidence: 0.85
+  raw_retention_days: 30
+  backup_keep_recent: 14
+  backup_keep_weekly: 8
+  # Retained instance metadata; the disabled board feature does not load tools.
+  board_alias: board1
+  board_lease_max_minutes: 240
+  push_approval_minutes: 30
+identity:
+  control_operator_id: operator
+  telegram_control_user_id: null
+  telegram_control_chat_id: null
+  feishu_owner_open_id: null
+  feishu_p0_chat_id: null
+scope:
+  technical_chat_ids: []
+  auto_reply_chat_ids: []
+# First start is web-only. Add repositories and local execution roots only
+# after reviewing the execution and authorization guides.
+repositories: {}
+base:
+  app_token: null
+  cases_table_id: null
+  knowledge_table_id: null
+  mail_table_id: null
+  health_table_id: null

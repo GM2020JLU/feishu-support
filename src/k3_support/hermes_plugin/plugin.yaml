@@ -1,0 +1,5 @@
+name: k3-support-control
+version: 0.1.0
+description: Deterministic Telegram and Feishu control routing for the K3 support control plane
+provides_hooks:
+  - pre_gateway_dispatch

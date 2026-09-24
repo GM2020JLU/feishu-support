@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://k3-support.local/schemas/knowledge-evaluation-gold-manifest-v1.json",
+  "title": "Auditable knowledge evaluation gold bundle manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "candidate_digest", "review_digest", "gold_digest",
+    "candidate_count", "reviewed_count", "accepted_count", "rejected_count",
+    "unreviewed_count", "complete", "reviewers", "reviewed_at_min",
+    "reviewed_at_max", "cases"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "candidate_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "review_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "gold_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "candidate_count": {"type": "integer", "minimum": 1},
+    "reviewed_count": {"type": "integer", "minimum": 1},
+    "accepted_count": {"type": "integer", "minimum": 1},
+    "rejected_count": {"type": "integer", "minimum": 0},
+    "unreviewed_count": {"type": "integer", "minimum": 0},
+    "complete": {"type": "boolean"},
+    "reviewers": {
+      "type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true
+    },
+    "reviewed_at_min": {"type": "string", "minLength": 10},
+    "reviewed_at_max": {"type": "string", "minLength": 10},
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "reviewed_by", "reviewed_at", "source_type", "source_id"],
+        "properties": {
+          "id": {"type": "string"},
+          "reviewed_by": {"type": "string", "minLength": 1},
+          "reviewed_at": {"type": "string", "minLength": 10},
+          "source_type": {"enum": ["approved_knowledge", "reviewed_route_decision", "shadow_route_decision"]},
+          "source_id": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

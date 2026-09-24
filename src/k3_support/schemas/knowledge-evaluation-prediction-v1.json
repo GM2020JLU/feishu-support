@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://k3-support.local/schemas/knowledge-evaluation-prediction-v1.json",
+  "title": "Knowledge evaluation prediction",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id", "route", "answered", "retrieved_knowledge_ids",
+    "selected_knowledge_id", "claim_ids", "abstention_reason", "resolved_scope"
+  ],
+  "properties": {
+    "id": {"type": "string", "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{2,127}$"},
+    "route": {
+      "enum": ["ignore", "direct_answer", "clarify", "research", "codex_debug", "owner_decision", "urgent_notify"]
+    },
+    "answered": {"type": "boolean"},
+    "retrieved_knowledge_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "selected_knowledge_id": {"type": ["string", "null"]},
+    "claim_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "abstention_reason": {
+      "type": ["string", "null"],
+      "enum": [null, "no_match", "ambiguous_scope", "version_unknown", "conflicting_sources", "stale_evidence", "insufficient_validation", "acl_denied", "high_risk", "needs_live_debug", "semantic_selection_required"]
+    },
+    "resolved_scope": {"type": "object"}
+  }
+}

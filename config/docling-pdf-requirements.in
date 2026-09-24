@@ -1,0 +1,6 @@
+# Optional CPU-only PDF/image parser: Linux x86_64, Python 3.12, glibc >= 2.28.
+# Official CPU wheel URLs avoid mixing the PyTorch index with all dependencies.
+-r docling-office-requirements.in
+docling-slim[models-local,feat-ocr-rapidocr-onnx]==2.126.0
+torch @ https://download-r2.pytorch.org/whl/cpu/torch-2.8.0%2Bcpu-cp312-cp312-manylinux_2_28_x86_64.whl#sha256=cb9a8ba8137ab24e36bf1742cb79a1294bd374db570f09fc15a5e1318160db4e
+torchvision @ https://download-r2.pytorch.org/whl/cpu/torchvision-0.23.0%2Bcpu-cp312-cp312-manylinux_2_28_x86_64.whl#sha256=ae459d4509d3b837b978dc6c66106601f916b6d2cda75c137e3f5f48324ce1da

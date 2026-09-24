@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://k3-support.local/schemas/knowledge-evaluation-review-v1.json",
+  "title": "Human decision for a knowledge evaluation candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "candidate_id", "candidate_digest", "query_digest",
+    "decision", "reviewed_by", "reviewed_at", "notes", "label"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "candidate_id": {"type": "string", "pattern": "^candidate-[0-9a-f]{24}$"},
+    "candidate_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "query_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "decision": {"enum": ["pending", "accepted", "rejected"]},
+    "reviewed_by": {
+      "type": ["string", "null"], "minLength": 1, "maxLength": 256
+    },
+    "reviewed_at": {
+      "type": ["string", "null"], "minLength": 10, "maxLength": 64
+    },
+    "notes": {"type": "string", "maxLength": 10000},
+    "label": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/finalLabel"}
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"decision": {"const": "pending"}}},
+      "then": {
+        "properties": {
+          "reviewed_by": {"type": "null"},
+          "reviewed_at": {"type": "null"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"decision": {"const": "accepted"}}},
+      "then": {
+        "properties": {
+          "reviewed_by": {"type": "string", "minLength": 1},
+          "reviewed_at": {"type": "string", "minLength": 10},
+          "label": {"$ref": "#/$defs/finalLabel"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"decision": {"const": "rejected"}}},
+      "then": {
+        "properties": {
+          "reviewed_by": {"type": "string", "minLength": 1},
+          "reviewed_at": {"type": "string", "minLength": 10},
+          "label": {"type": "null"}
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "finalLabel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "expected_route", "answerable", "allowed_knowledge_ids",
+        "allowed_claim_ids", "forbidden_knowledge_ids", "required_scope",
+        "clarification_allowed", "acceptable_abstention_reasons", "tags"
+      ],
+      "properties": {
+        "expected_route": {
+          "enum": ["ignore", "direct_answer", "clarify", "research", "codex_debug", "owner_decision", "urgent_notify"]
+        },
+        "answerable": {"type": "boolean"},
+        "allowed_knowledge_ids": {
+          "type": "array", "items": {"type": "string"}, "uniqueItems": true
+        },
+        "allowed_claim_ids": {
+          "type": "array", "items": {"type": "string"}, "uniqueItems": true
+        },
+        "forbidden_knowledge_ids": {
+          "type": "array", "items": {"type": "string"}, "uniqueItems": true
+        },
+        "required_scope": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "product": {"type": "string"},
+            "component": {"type": "string"},
+            "board": {"type": "string"},
+            "software_version": {"type": "string"},
+            "boot_stage": {"type": "string"},
+            "storage_medium": {"type": "string"}
+          }
+        },
+        "clarification_allowed": {"type": "boolean"},
+        "acceptable_abstention_reasons": {
+          "type": "array",
+          "items": {
+            "enum": ["no_match", "ambiguous_scope", "version_unknown", "conflicting_sources", "stale_evidence", "insufficient_validation", "acl_denied", "high_risk", "needs_live_debug"]
+          },
+          "uniqueItems": true
+        },
+        "tags": {
+          "type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true
+        }
+      }
+    }
+  }
+}

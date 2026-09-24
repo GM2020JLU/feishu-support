@@ -1,0 +1,3 @@
+# Optional isolated Office parser, not part of the default worker installation.
+# DocumentConverter eagerly imports the PDF backend even for Office-only use.
+docling-slim[convert-core,format-docx,format-pptx,format-xlsx,format-pdf]==2.126.0

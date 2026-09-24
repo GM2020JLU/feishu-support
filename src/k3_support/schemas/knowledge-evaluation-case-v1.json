@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://k3-support.local/schemas/knowledge-evaluation-case-v1.json",
+  "title": "Knowledge evaluation case",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id", "query", "expected_route", "answerable", "allowed_knowledge_ids",
+    "allowed_claim_ids", "forbidden_knowledge_ids", "required_scope",
+    "clarification_allowed", "acceptable_abstention_reasons", "tags"
+  ],
+  "properties": {
+    "id": {"type": "string", "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{2,127}$"},
+    "query": {"type": "string", "minLength": 2, "maxLength": 10000},
+    "expected_route": {
+      "enum": ["ignore", "direct_answer", "clarify", "research", "codex_debug", "owner_decision", "urgent_notify"]
+    },
+    "answerable": {"type": "boolean"},
+    "allowed_knowledge_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "allowed_claim_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "forbidden_knowledge_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "required_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "product": {"type": "string"},
+        "component": {"type": "string"},
+        "board": {"type": "string"},
+        "software_version": {"type": "string"},
+        "boot_stage": {"type": "string"},
+        "storage_medium": {"type": "string"}
+      }
+    },
+    "clarification_allowed": {"type": "boolean"},
+    "acceptable_abstention_reasons": {
+      "type": "array",
+      "items": {
+        "enum": ["no_match", "ambiguous_scope", "version_unknown", "conflicting_sources", "stale_evidence", "insufficient_validation", "acl_denied", "high_risk", "needs_live_debug", "semantic_selection_required"]
+      },
+      "uniqueItems": true
+    },
+    "tags": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+  }
+}

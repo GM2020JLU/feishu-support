@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://k3-support.local/schemas/knowledge-evaluation-candidate-v1.json",
+  "title": "Human-review candidate for the knowledge evaluation gold set",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "id", "status", "query", "suggestion", "provenance", "review"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "id": {"type": "string", "pattern": "^candidate-[0-9a-f]{24}$"},
+    "status": {"const": "candidate"},
+    "query": {"type": "string", "minLength": 2, "maxLength": 10000},
+    "suggestion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["expected_route", "answerable", "allowed_knowledge_ids", "allowed_claim_ids", "acceptable_abstention_reasons", "tags"],
+      "properties": {
+        "expected_route": {"enum": ["direct_answer", "clarify", "research", "codex_debug", "owner_decision", "urgent_notify"]},
+        "answerable": {"type": "boolean"},
+        "allowed_knowledge_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "allowed_claim_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "acceptable_abstention_reasons": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "tags": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_type", "source_id"],
+      "properties": {
+        "source_type": {"enum": ["approved_knowledge", "reviewed_route_decision", "shadow_route_decision", "reviewed_sent_feedback"]},
+        "source_id": {"type": "string", "minLength": 1}
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decision", "reviewed_by", "reviewed_at", "notes"],
+      "properties": {
+        "decision": {"type": "null"},
+        "reviewed_by": {"type": "null"},
+        "reviewed_at": {"type": "null"},
+        "notes": {"type": "string"}
+      }
+    }
+  }
+}

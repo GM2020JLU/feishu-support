@@ -1,0 +1,27 @@
+[Unit]
+Description=Restricted K3 worker template launcher
+Requires=k3-support-broker-launcher.socket
+After=dbus.service
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/opt/k3-support/venv/bin/k3-support-broker-launcher --control-user k3-support-control --state-directory /var/lib/k3-support-launcher
+StateDirectory=k3-support-launcher
+StateDirectoryMode=0700
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectControlGroups=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+RestrictAddressFamilies=AF_UNIX
+CapabilityBoundingSet=
+KillMode=control-group
+TimeoutStopSec=15
+Restart=on-failure
+RestartSec=30

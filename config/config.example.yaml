@@ -1,0 +1,113 @@
+schema_version: 2
+mode: shadow
+timezone: Asia/Shanghai
+work_hours:
+  start: "09:00"
+  end: "18:00"
+paths:
+  data_dir: ~/.hermes/k3-support
+  database: ~/.hermes/k3-support/state/support.db
+runtime:
+  remote_host: k3-build-host
+  remote_workspace_root: /srv/k3
+  remote_source_root: /srv/k3/source
+  remote_worktree_root: /srv/k3/worktrees
+  # Optional, narrowly scoped read-only toolchains; no home, secrets or source roots.
+  # Paths must be canonical on the remote host (symlink grants are refused).
+  remote_toolchain_roots: []
+  # Optional pre-provisioned 0700 directory owned by the remote control identity.
+  # Must be outside source, worktree and all sandbox/toolchain mounts.
+  remote_receipt_directory: null
+  ssh_command: ssh
+  serial_command: serial
+  # Optional paired values: dedicated, already-running serial v2 daemon socket
+  # and trusted daemon UID. Enables attach-before-reset BROM cleanup.
+  board_serial_socket: null
+  board_serial_daemon_uid: null
+  lark_cli_command: lark-cli
+  hermes_command: hermes
+  # Separate inference bridge; Hermes messaging commands stay on hermes_command.
+  semantic_command: /opt/k3-support/venv/bin/k3-support-hermes-stdin
+  board_control_script: ~/.codex/skills/board-ctrl/scripts/board-ctrl.sh
+  board_boot_script: ~/.codex/skills/board-ctrl/scripts/fastboot-boot.sh
+  codex_remote_command: k3-codex-remote
+  codex_board_command: k3-codex-board
+features:
+  shadow_reply: true
+  auto_faq: false
+  codex: false
+  board: false
+  wip_push: false
+  mail: false
+  calendar: false
+  base_sync: false
+# Ordinary operator notices and scheduled mail summaries.
+# telegram: legacy destination; feishu: requires all Feishu control identities;
+# web: console only, no external notification. P0 routes below are independent.
+operator_notifications:
+  channel: telegram
+notifications:
+  telegram_p0: true
+  feishu_p0_message: true
+  # Explicit opt-in: these channels require extra permissions and can be disruptive.
+  feishu_app_urgent: false
+  feishu_sms_urgent: false
+routing:
+  ai_enabled: true
+  minimum_route_confidence: 0.80
+  minimum_clarify_confidence: 0.92
+  max_clarifications_per_case: 1
+  profile_ttl_hours: 168
+  # Uses detailed organization fields when authorized and otherwise falls back
+  # to the signed-in user's visible contact name and department without guessing.
+  org_profile_lookup: false
+coordination:
+  # Gives normal Feishu use a chance to claim the turn before AI sends.
+  work_hours_send_grace_seconds: 60
+  off_hours_send_grace_seconds: 15
+  # Add this reaction to the original question to claim its reply channel.
+  claim_reaction: OnIt
+ingress:
+  # Re-query a bounded window so delayed search indexing cannot skip messages.
+  # Durable message IDs make the overlap idempotent.
+  poll_lookback_seconds: 300
+mail:
+  # Important messages are shared as native Mail cards into this private chat;
+  # their Feishu message AppLinks are then included in the Telegram digest.
+  # null reuses identity.feishu_p0_chat_id as the single owner-chat source.
+  summary_share_chat_id: null
+  max_important_per_summary: 8
+  max_body_chars_per_message: 6000
+  max_input_chars: 180000
+policy:
+  auto_reply_confidence: 0.85
+  raw_retention_days: 30
+  body_retention_days: null # Opt-in DB payload TTL; does not erase files or backups.
+  captured_draft_retention_days: null # Independent opt-in TTL for unreviewed, unreferenced captured drafts only.
+  backup_keep_recent: 14
+  backup_keep_weekly: 8
+  backup_max_age_days: null # Optional age cap; always preserve latest non-future backup.
+  board_alias: board1
+  board_lease_max_minutes: 240
+  push_approval_minutes: 30
+identity:
+  telegram_control_user_id: null
+  telegram_control_chat_id: null
+  feishu_owner_open_id: null
+  feishu_p0_chat_id: null
+scope:
+  technical_chat_ids: []
+  auto_reply_chat_ids: []
+repositories:
+  u-boot:
+    routing_keywords: [u-boot, uboot, bootloader]
+    path: /srv/k3/source/u-boot
+    remote: origin
+    base_branch: main
+    build_component: uboot
+base:
+  app_token: null
+  cases_table_id: null
+  knowledge_table_id: null
+  mail_table_id: null
+  health_table_id: null

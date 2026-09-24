@@ -1,0 +1,33 @@
+[Unit]
+Description=K3 support control-side approved board execution consumer
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=k3-support-control
+Group=k3-support-control
+ExecStart=/opt/k3-support/venv/bin/k3-support-broker-board --config /etc/k3-support/broker.yaml --contract-directory /etc/k3-support/contracts --worker-user k3-support-worker --watch
+StateDirectory=k3-support-control
+StateDirectoryMode=0700
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+# Preserve host device names, but deny physical devices until an administrator
+# supplies exact board-specific DeviceAllow entries in a reviewed drop-in.
+PrivateDevices=no
+DevicePolicy=closed
+ProtectSystem=strict
+ProtectHome=yes
+ProtectControlGroups=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+CapabilityBoundingSet=
+KillMode=control-group
+TimeoutStopSec=15
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

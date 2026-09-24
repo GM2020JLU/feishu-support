@@ -1,0 +1,9 @@
+# Optional Linux CPU inference environment; not installed by the control plane.
+# Resolve torch from https://download.pytorch.org/whl/cpu explicitly.
+FlagEmbedding==1.4.2
+torch==2.8.0+cpu
+transformers==5.16.1
+qdrant-client==1.19.0
+jsonschema>=4.23
+PyYAML>=6.0.2
+cryptography==50.0.1

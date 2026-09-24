@@ -1,0 +1,15 @@
+[Unit]
+Description=Restricted K3 worker template launch socket
+
+[Socket]
+ListenStream=/run/k3-support-launcher.sock
+FileDescriptorName=broker
+SocketUser=k3-support-control
+SocketGroup=k3-support-control
+SocketMode=0600
+Accept=no
+RemoveOnStop=yes
+Service=k3-support-broker-launcher.service
+
+[Install]
+WantedBy=sockets.target

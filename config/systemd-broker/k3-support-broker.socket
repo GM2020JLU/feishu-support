@@ -1,0 +1,16 @@
+[Unit]
+Description=K3 support restricted worker IPC
+
+[Socket]
+ListenStream=/run/k3-support-broker/broker.sock
+FileDescriptorName=broker
+SocketUser=k3-support-control
+SocketGroup=k3-support-ipc
+SocketMode=0660
+DirectoryMode=0755
+Accept=no
+RemoveOnStop=yes
+Service=k3-support-broker.service
+
+[Install]
+WantedBy=sockets.target

@@ -1,0 +1,30 @@
+[Unit]
+Description=K3 support control broker
+Conflicts=k3-support-broker.socket
+
+[Service]
+Type=notify
+NotifyAccess=main
+User=k3-support-control
+Group=k3-support-control
+ExecStart=/opt/k3-support/venv/bin/k3-support-broker --listen-path /run/k3-support-broker/broker.sock --socket-group k3-support-ipc --config /etc/k3-support/broker.yaml --key-directory /etc/k3-support/control-keys --worker-user k3-support-worker --contract-directory /etc/k3-support/worker-contract
+RuntimeDirectory=k3-support-broker
+RuntimeDirectoryMode=0755
+SupplementaryGroups=k3-support-ipc
+StateDirectory=k3-support-control
+StateDirectoryMode=0700
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectControlGroups=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+RestrictAddressFamilies=AF_UNIX
+CapabilityBoundingSet=
+KillMode=control-group
+TimeoutStopSec=45
+Restart=on-failure
+RestartSec=5
