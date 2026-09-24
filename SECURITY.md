@@ -1,10 +1,11 @@
 # Security reports
 
 Please do not post credentials, private Bug content, exploit steps against a
-live installation, or customer data in a public issue. Use GitHub's private
-vulnerability reporting for this repository if it is enabled. Otherwise open
-a public issue containing only a non-sensitive request for a private reporting
-channel; share technical details only after that channel is established.
+live installation, or customer data in a public issue. Use this repository's
+[Security Advisories page](https://github.com/GM2020JLU/feishu-support/security/advisories)
+and select **Report a vulnerability** to send a private report to the
+maintainers. Include the affected
+version, reproduction steps, impact, and a safe way to confirm the issue.
 
 If a secret may have been exposed, revoke or rotate it promptly. Removing a
 file or rewriting Git history alone does not invalidate copied credentials.
